@@ -12,13 +12,16 @@ import humidity_icon from "../Assets/humidity.png"
 export const WeatherApp = () => {
   
     const [Wicon,setWicon] = useState(cloud_icon);
+    const [weatherData, setWeatherData] = useState({
+        humidity: 77,
+        wind: 15,
+        temperature: 23,
+        location: 'Vinland'
+    })
 
     const  search = async () => {
         const cityInput = document.getElementsByClassName("cityinput")[0];
-        const humidity = document.getElementsByClassName("humidity-percent")[0];
-        const wind = document.getElementsByClassName("wind-speed")[0];
-        const temperature = document.getElementsByClassName("weather-temp")[0];
-        const location = document.getElementsByClassName("weather-location")[0];
+
 
         if (cityInput.value === "") {
             return 0;
@@ -32,11 +35,14 @@ export const WeatherApp = () => {
 
             
 
-            // Update DOM elements with fetched data
-            humidity.innerHTML = data.main.humidity + " %";
-            wind.innerHTML = data.wind.speed + " Km/h";
-            temperature.innerHTML = data.main.temp + "°";
-            location.innerHTML = data.name;
+            setWeatherData({
+                humidity: data.main.humidity + " %",
+                wind: data.wind.speed + 'Km/h',
+                temperature: data.main.temp + "°C",
+                location: data.main.name
+            })
+
+        
 
             if(data.weather[0].icon === "01d" || data.weather[0].icon === "01n" )
             {
@@ -85,20 +91,20 @@ export const WeatherApp = () => {
             <div className="weather-image">
                 <img src={Wicon} alt=""/>
             </div>
-            <div className="weather-temp">24°c</div>
-            <div className="weather-location">London</div>
+            <div className="weather-temp">{weatherData.temperature}</div>
+            <div className="weather-location">{weatherData.location}</div>
             <div className="data-container">
                 <div className="element">
                     <img src={humidity_icon} alt="" className='icon' />
                     <div className="data">
-                        <div className="humidity-percent">77%</div>
+                        <div className="humidity-percent">{weatherData.humidity}</div>
                         <div className="text">Humidity</div>
                     </div>
                 </div>
                 <div className="element">
                     <img src={wind_icon} alt="" className='icon' />
                     <div className="data">
-                        <div className="wind-speed">15 Km/hr</div>
+                        <div className="wind-speed">{weatherData.wind}</div>
                         <div className="text">Wind Speed</div>
                     </div>
                 </div>
